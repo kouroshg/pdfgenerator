@@ -1,5 +1,6 @@
 import edgeChromium from "chrome-aws-lambda";
 import puppeteer from "puppeteer-core";
+const fs = require("fs").promises;
 
 // You may want to change this if you're developing
 // on a platform different from macOS.
@@ -9,6 +10,13 @@ const LOCAL_CHROME_EXECUTABLE =
   "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 
 export default async function (req, res) {
+  // replace {{data}} with the data you want to pass to the html page
+  const data = JSON.stringify(req.body);
+  const filePath = "html/index.html";
+  const html = await fs.readFile(filePath, "utf8");
+  const replacedHtml = html.replace("{{data}}", data);
+  await fs.writeFile(filePath, replacedHtml, "utf8");
+
   // Edge executable will return an empty string locally.
   const executablePath =
     (await edgeChromium.executablePath) || LOCAL_CHROME_EXECUTABLE;

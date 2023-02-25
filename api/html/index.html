@@ -21,64 +21,62 @@ https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js
       <script>
         {
           // load json data
-          fetch("/report.json")
-            .then((response) => response.json())
-            .then(({ tables }) => {
-              // create a new chart
-              // const { tables } = data;
-              tables.map((table) => {
-                const divEl = document.createElement("div");
-                divEl.setAttribute("class", "canvas-container");
-                divEl.setAttribute("style", "width: 700px; margin: 40px;");
+          // fetch("/report.json")
+          //   .then((response) => response.json())
+          //   .then(({ tables }) => {
+          // create a new chart
+          const data = "{{data}}";
+          const { tables } = data;
+          tables.map((table) => {
+            const divEl = document.createElement("div");
+            divEl.setAttribute("class", "canvas-container");
+            divEl.setAttribute("style", "width: 700px; margin: 40px;");
 
-                const canvasEl = document.createElement("canvas");
-                canvasEl.setAttribute("id", table.title);
+            const canvasEl = document.createElement("canvas");
+            canvasEl.setAttribute("id", table.title);
 
-                divEl.appendChild(canvasEl);
-                document.getElementById("container").appendChild(divEl);
+            divEl.appendChild(canvasEl);
+            document.getElementById("container").appendChild(divEl);
 
-                const myChart = new Chart(
-                  document.getElementById(table.title),
+            const myChart = new Chart(document.getElementById(table.title), {
+              type: "line",
+              data: {
+                labels: table.rows.map((row) => row[0]),
+                datasets: [
                   {
-                    type: "line",
-                    data: {
-                      labels: table.rows.map((row) => row[0]),
-                      datasets: [
-                        {
-                          label: table.title,
-                          data: table.rows.map((row) =>
-                            Number(row[1].replace("%", ""))
-                          ),
-                        },
-                      ],
+                    label: table.title,
+                    data: table.rows.map((row) =>
+                      Number(row[1].replace("%", ""))
+                    ),
+                  },
+                ],
+              },
+              options: {
+                borderColor: table.color,
+                backgroundColor: table.color,
+                tension: 0.2,
+                pointRadius: 0,
+                borderWidth: 2,
+                width: 1,
+                scales: {
+                  y: {
+                    min: 0,
+                    max: 100,
+                    ticks: {
+                      callback: (value) => value + "%",
                     },
-                    options: {
-                      borderColor: table.color,
-                      backgroundColor: table.color,
-                      tension: 0.2,
-                      pointRadius: 0,
-                      borderWidth: 2,
-                      width: 1,
-                      scales: {
-                        y: {
-                          min: 0,
-                          max: 100,
-                          ticks: {
-                            callback: (value) => value + "%",
-                          },
-                          scaleLabel: {
-                            display: true,
-                            labelString: "Percentage",
-                          },
-                        },
-                      },
+                    scaleLabel: {
+                      display: true,
+                      labelString: "Percentage",
                     },
-                  }
-                );
-              });
-              // console.log(data);
-            })
-            .catch((error) => console.error(error));
+                  },
+                },
+              },
+            });
+          });
+          // console.log(data);
+          // })
+          // .catch((error) => console.error(error));
         }
       </script>
     </div>
