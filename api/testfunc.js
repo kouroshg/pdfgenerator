@@ -15,7 +15,7 @@ export default async function (req, res) {
   const filePath = `${__dirname}/html/index.html`;
   const html = await fs.readFile(filePath, "utf8");
   const replacedHtml = html.replace("{{data}}", data);
-  await fs.writeFile(filePath, replacedHtml, "utf8");
+  //   await fs.writeFile(filePath, replacedHtml, "utf8");
 
   // Edge executable will return an empty string locally.
   const executablePath =
@@ -28,7 +28,7 @@ export default async function (req, res) {
   });
 
   const page = await browser.newPage();
-  await page.goto(`file://${__dirname}/html/index.html`);
+  await page.setContent(replacedHtml);
 
   // we Use pdf function to generate the pdf in the same folder as this file.
   const buffer = await page.pdf({
