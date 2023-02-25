@@ -24,7 +24,6 @@ export default async function (req, res) {
 
   // we Use pdf function to generate the pdf in the same folder as this file.
   const buffer = await page.pdf({
-    path: "report.pdf",
     format: "A4",
     printBackground: true,
     margin: {
