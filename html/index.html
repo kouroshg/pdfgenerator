@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="
+https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js
+"></script>
+    <link rel="stylesheet" href="./styles.css" />
+    <title></title>
+  </head>
+  <body>
+    <div
+      style="
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      "
+      id="container"
+    >
+      <script>
+        {
+          // load json data
+          fetch("report.json")
+            .then((response) => response.json())
+            .then(({ tables }) => {
+              // create a new chart
+              tables.map((table) => {
+                const divEl = document.createElement("div");
+                divEl.setAttribute("class", "canvas-container");
+
+                const canvasEl = document.createElement("canvas");
+                canvasEl.setAttribute("id", table.title);
+
+                divEl.appendChild(canvasEl);
+                document.getElementById("container").appendChild(divEl);
+                const myChart = new Chart(
+                  document.getElementById(table.title),
+                  {
+                    type: "line",
+                    data: {
+                      labels: table.rows.map((row) => row[0]),
+                      datasets: [
+                        {
+                          label: table.title,
+                          data: table.rows.map((row) =>
+                            Number(row[1].replace("%", ""))
+                          ),
+                        },
+                      ],
+                    },
+                    options: {
+                      borderColor: table.color,
+                      backgroundColor: table.color,
+                      tension: 0.2,
+                      pointRadius: 0,
+                      borderWidth: 2,
+                      width: 1,
+                      scales: {
+                        y: {
+                          min: 0,
+                          max: 100,
+                          ticks: {
+                            callback: (value) => value + "%",
+                          },
+                          scaleLabel: {
+                            display: true,
+                            labelString: "Percentage",
+                          },
+                        },
+                      },
+                    },
+                  }
+                );
+              });
+              // console.log(data);
+            })
+            .catch((error) => console.error(error));
+        }
+      </script>
+    </div>
+  </body>
+</html>
