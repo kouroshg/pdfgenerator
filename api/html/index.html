@@ -21,11 +21,11 @@ https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js
       <script>
         {
           // load json data
-          fetch("report.json")
+          fetch("/report.json")
             .then((response) => response.json())
             .then(({ tables }) => {
               // create a new chart
-              const { tables } = data;
+              // const { tables } = data;
               tables.map((table) => {
                 const divEl = document.createElement("div");
                 divEl.setAttribute("class", "canvas-container");
