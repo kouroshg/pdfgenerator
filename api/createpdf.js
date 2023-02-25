@@ -1,19 +1,24 @@
 const express = require("express");
 const app = express();
-const port = 3000;
+// const port = 3000;
 const puppeteer = require("puppeteer");
 const fs = require("fs");
 
 app.use(express.json({ limit: "5mb" }));
 
-app.post("/", async (req, res) => {
+module.exports = async (req, res) => {
   const buffer = await createPdf(JSON.stringify(req.body));
   res.end(buffer);
-});
+};
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+// app.post("/", async (req, res) => {
+//   const buffer = await createPdf(JSON.stringify(req.body));
+//   res.end(buffer);
+// });
+
+// app.listen(port, () => {
+//   console.log(`Example app listening on port ${port}`);
+// });
 
 async function createPdf(data) {
   // save the data to a file
