@@ -22,5 +22,20 @@ export default async function (req, res) {
   const page = await browser.newPage();
   await page.goto(`file://${__dirname}/html/index.html`);
 
+  // we Use pdf function to generate the pdf in the same folder as this file.
+  const buffer = await page.pdf({
+    path: "report.pdf",
+    format: "A4",
+    printBackground: true,
+    margin: {
+      top: "20px",
+      right: "40px",
+      bottom: "20px",
+      left: "40px",
+    },
+  });
+
+  await browser.close();
+
   res.send("hello");
 }
