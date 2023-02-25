@@ -1119,12 +1119,14 @@ https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js
           tables.map((table) => {
             const divEl = document.createElement("div");
             divEl.setAttribute("class", "canvas-container");
+            divEl.setAttribute("style", "width: 700px; margin: 40px;");
 
             const canvasEl = document.createElement("canvas");
             canvasEl.setAttribute("id", table.title);
 
             divEl.appendChild(canvasEl);
             document.getElementById("container").appendChild(divEl);
+
             const myChart = new Chart(document.getElementById(table.title), {
               type: "line",
               data: {
