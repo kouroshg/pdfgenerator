@@ -6,11 +6,7 @@ const fs = require("fs");
 
 app.use(express.json({ limit: "5mb" }));
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
-app.post("/pdf", async (req, res) => {
+app.post("/", async (req, res) => {
   const buffer = await createPdf(JSON.stringify(req.body));
   res.end(buffer);
 });
