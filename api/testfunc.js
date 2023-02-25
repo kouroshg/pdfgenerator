@@ -12,7 +12,7 @@ const LOCAL_CHROME_EXECUTABLE =
 export default async function (req, res) {
   // replace {{data}} with the data you want to pass to the html page
   const data = JSON.stringify(req.body);
-  const filePath = "html/index.html";
+  const filePath = `${__dirname}/html/index.html`;
   const html = await fs.readFile(filePath, "utf8");
   const replacedHtml = html.replace("{{data}}", data);
   await fs.writeFile(filePath, replacedHtml, "utf8");
