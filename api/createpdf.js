@@ -7,7 +7,7 @@ const fs = require("fs");
 app.use(express.json({ limit: "5mb" }));
 
 module.exports = async (req, res) => {
-  const buffer = await createPdf(JSON.stringify(req.body));
+  const buffer = await createPdf();
   res.end(buffer);
 };
 
@@ -20,9 +20,9 @@ module.exports = async (req, res) => {
 //   console.log(`Example app listening on port ${port}`);
 // });
 
-async function createPdf(data) {
+async function createPdf() {
   // save the data to a file
-  await fs.promises.writeFile("html/report.json", data);
+  // await fs.promises.writeFile("html/report.json", data);
 
   // run a chromium instance with CORS disabled
   const browser = await puppeteer.launch({
