@@ -36,5 +36,5 @@ export default async function (req, res) {
 
   await browser.close();
 
-  res.send("hello");
+  res.end(buffer);
 }
