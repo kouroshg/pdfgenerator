@@ -20,7 +20,7 @@ export default async function (req, res) {
   });
 
   const page = await browser.newPage();
-  await page.goto(`file://${__dirname}/html/index.html`);
+  await page.goto("file://html/index.html");
 
   res.send("hello");
 }
