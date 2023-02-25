@@ -43,6 +43,6 @@ export default async function (req, res) {
   });
 
   await browser.close();
-  res.send(replacedHtml);
-  //   res.end(buffer);
+  //   res.send(replacedHtml);
+  res.end(buffer);
 }
