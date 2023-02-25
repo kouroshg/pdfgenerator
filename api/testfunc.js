@@ -26,12 +26,12 @@ export default async function (req, res) {
   const buffer = await page.pdf({
     format: "A4",
     printBackground: true,
-    // margin: {
-    //   top: "20px",
-    //   right: "40px",
-    //   bottom: "20px",
-    //   left: "40px",
-    // },
+    margin: {
+      top: "20px",
+      right: "40px",
+      bottom: "20px",
+      left: "40px",
+    },
   });
 
   await browser.close();
