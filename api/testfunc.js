@@ -8,19 +8,19 @@ import puppeteer from "puppeteer-core";
 const LOCAL_CHROME_EXECUTABLE =
   "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 
-module.exports = async (req, res) => {
+export default async function (req, res) {
+  // Edge executable will return an empty string locally.
   const executablePath =
     (await edgeChromium.executablePath) || LOCAL_CHROME_EXECUTABLE;
-  // run a chromium instance with CORS disabled
+
   const browser = await puppeteer.launch({
     executablePath,
     args: edgeChromium.args,
     headless: false,
-    args: ["--disable-web-security", "--no-sandbox"],
   });
 
   const page = await browser.newPage();
   await page.goto("https://github.com");
 
-  res.status(200).send(`Hello, world!`);
-};
+  res.send("hello");
+}
