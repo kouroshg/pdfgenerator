@@ -2,7 +2,7 @@ const PCR = require("puppeteer-chromium-resolver");
 // const puppeteer = require("puppeteer");
 
 // prepare the chromium instance
-const stats = await PCR({});
+const stats = PCR.getStats({});
 
 module.exports = async (req, res) => {
   // run a chromium instance with CORS disabled
