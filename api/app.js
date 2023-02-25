@@ -52,5 +52,4 @@ async function createPdf(data) {
 
   await browser.close();
   return buffer;
-  console.log("PDF Generated");
 }
