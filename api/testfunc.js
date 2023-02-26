@@ -13,8 +13,11 @@ export default async function (req, res) {
   // replace {{data}} with the data you want to pass to the html page
   const data = JSON.stringify(req.body);
   const filePath = `${__dirname}/html/index.html`;
+  const logoPath = `${__dirname}/html/4site-logo.svg`;
   const html = await fs.readFile(filePath, "utf8");
-  //   const replacedHtml = html.replace('"{data}"', data);
+  const logo = await fs.readFile(logoPath, "utf8");
+  const replacedHtml = html.replace('"{data}"', data);
+  replacedHtml = replacedHtml.replace("{logo}", logo);
   //   await fs.writeFile(filePath, replacedHtml, "utf8");
 
   // Edge executable will return an empty string locally.
@@ -28,10 +31,7 @@ export default async function (req, res) {
   });
 
   const page = await browser.newPage();
-  await page.goto(`data:text/html,${html}`, {
-    waitUntil: "networkidle0",
-  });
-  //   await page.setContent(replacedHtml);
+  await page.setContent(replacedHtml);
 
   // we Use pdf function to generate the pdf in the same folder as this file.
   const buffer = await page.pdf({
