@@ -30,6 +30,12 @@ https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js
         font-weight: 500;
       }
 
+      .location-table {
+        width: 100%;
+        margin-bottom: 60px;
+        break-inside: avoid;
+      }
+
       .page-wrapper {
         width: 100%;
         display: flex;
@@ -136,7 +142,7 @@ https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js
             const locationTable = document.createElement("table");
             const locHeadRow = locationTable.createTHead().insertRow();
             const locBody = locationTable.createTBody();
-
+            locationTable.setAttribute("class", "location-table");
             summary.overview.map((location, index) => {
               const row = locBody.insertRow(index);
               location.map((loc) => {
