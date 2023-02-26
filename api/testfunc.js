@@ -46,11 +46,10 @@ export default async function (req, res) {
     },
     displayHeaderFooter: true,
     footerTemplate: `<div style="font-size: 12px; color: black; text-align: right; width: 100%">
-                        <span class="pageNumber" style="margin-right: 40px; margin-bottom:20px"></span>
+                        <span class="pageNumber" style="margin-right: 40px; margin-bottom:30px"></span>
                     </div>`,
   });
 
   await browser.close();
-  //   res.send(replacedHtml);
-  res.end(buffer);
+  res.end(buffer.toString("base64"));
 }
