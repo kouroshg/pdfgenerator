@@ -44,6 +44,13 @@ export default async function (req, res) {
       bottom: "20px",
       left: "40px",
     },
+    footerTemplate: `
+    <div style="border-top: solid 1px #bbb; width: 100%; font-size: 9px;
+        padding: 5px 5px 0; color: #bbb; position: relative;">
+        <div style="position: absolute; left: 5px; top: 5px;"><span class="date"></span></div>
+        <div style="position: absolute; right: 5px; top: 5px;"><span class="pageNumber"></span>/<span class="totalPages"></span></div>
+    </div>
+  `,
   });
 
   await browser.close();

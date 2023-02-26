@@ -1,13 +1,13 @@
 const express = require("express");
 const app = express();
-// const port = 3000;
+const port = 3000;
 const puppeteer = require("puppeteer");
 const fs = require("fs");
 
 app.use(express.json({ limit: "5mb" }));
 
 module.exports = async (req, res) => {
-  const buffer = await createPdf();
+  const buffer = await createPdf(JSON.stringify(req.body));
   res.end(buffer);
 };
 
@@ -20,9 +20,9 @@ module.exports = async (req, res) => {
 //   console.log(`Example app listening on port ${port}`);
 // });
 
-async function createPdf() {
+async function createPdf(data) {
   // save the data to a file
-  // await fs.promises.writeFile("html/report.json", data);
+  await fs.promises.writeFile("html/report.json", data);
 
   // run a chromium instance with CORS disabled
   const browser = await puppeteer.launch({
