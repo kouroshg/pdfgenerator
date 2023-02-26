@@ -14,7 +14,7 @@ export default async function (req, res) {
   const data = JSON.stringify(req.body);
   const filePath = `${__dirname}/html/index.html`;
   const html = await fs.readFile(filePath, "utf8");
-  const replacedHtml = html.replace('"{data}"', data);
+  //   const replacedHtml = html.replace('"{data}"', data);
   //   await fs.writeFile(filePath, replacedHtml, "utf8");
 
   // Edge executable will return an empty string locally.
@@ -28,7 +28,7 @@ export default async function (req, res) {
   });
 
   const page = await browser.newPage();
-  await page.goto(`data:text/html,${replacedHtml}`, {
+  await page.goto(`data:text/html,${html}`, {
     waitUntil: "networkidle0",
   });
   //   await page.setContent(replacedHtml);

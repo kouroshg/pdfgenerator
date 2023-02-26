@@ -90,99 +90,108 @@ https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js
         <div class="line-separator" />
         <script>
           {
-            // vercel function repalces {data} with report json
-            const data = "{data}";
-            const { tables, summary } = data;
-            // date table
-            const dateTable = document.createElement("table");
-            const dateHeadCell = dateTable
-              .createTHead()
-              .insertRow()
-              .insertCell();
-            const datebodyCell = dateTable
-              .createTBody()
-              .insertRow()
-              .insertCell();
-            dateHeadCell.textContent = "Dates";
-            datebodyCell.textContent = summary.dates;
-            document.getElementById("container").appendChild(dateTable);
+            // // vercel function repalces {data} with report json
+            // const data = "{data}";
+            // load json data
+            fetch("report.json")
+              .then((response) => response.json())
+              .then(({ tables, summary }) => {
+                // const { tables, summary } = data;
+                // date table
+                const dateTable = document.createElement("table");
+                const dateHeadCell = dateTable
+                  .createTHead()
+                  .insertRow()
+                  .insertCell();
+                const datebodyCell = dateTable
+                  .createTBody()
+                  .insertRow()
+                  .insertCell();
+                dateHeadCell.textContent = "Dates";
+                datebodyCell.textContent = summary.dates;
+                document.getElementById("container").appendChild(dateTable);
 
-            // location table
-            const locationTable = document.createElement("table");
-            const locHeadRow = locationTable.createTHead().insertRow();
-            const locBody = locationTable.createTBody();
+                // location table
+                const locationTable = document.createElement("table");
+                const locHeadRow = locationTable.createTHead().insertRow();
+                const locBody = locationTable.createTBody();
 
-            summary.overview.map((location, index) => {
-              const row = locBody.insertRow(index);
-              location.map((loc) => {
-                if (index === 0) {
-                  locHeadRow.insertCell().textContent = loc;
-                } else {
-                  const cell = row.insertCell();
-                  cell.textContent = loc;
-                }
-              });
-            });
+                summary.overview.map((location, index) => {
+                  const row = locBody.insertRow(index);
+                  location.map((loc) => {
+                    if (index === 0) {
+                      locHeadRow.insertCell().textContent = loc;
+                    } else {
+                      const cell = row.insertCell();
+                      cell.textContent = loc;
+                    }
+                  });
+                });
 
-            document.getElementById("container").appendChild(locationTable);
+                document.getElementById("container").appendChild(locationTable);
 
-            // create new charts
-            tables.map((table) => {
-              const divEl = document.createElement("div");
-              divEl.setAttribute("class", "canvas-container");
+                // create new charts
+                tables.map((table) => {
+                  const divEl = document.createElement("div");
+                  divEl.setAttribute("class", "canvas-container");
 
-              const canvasEl = document.createElement("canvas");
-              canvasEl.setAttribute("id", table.title);
+                  const canvasEl = document.createElement("canvas");
+                  canvasEl.setAttribute("id", table.title);
 
-              divEl.appendChild(canvasEl);
-              document.getElementById("container").appendChild(divEl);
+                  divEl.appendChild(canvasEl);
+                  document.getElementById("container").appendChild(divEl);
 
-              const myChart = new Chart(document.getElementById(table.title), {
-                type: "line",
-                data: {
-                  labels: table.rows.map((row) => row[0]),
-                  datasets: [
+                  const myChart = new Chart(
+                    document.getElementById(table.title),
                     {
-                      label: table.title,
-                      data: table.rows.map((row) =>
-                        Number(row[1].replace("%", ""))
-                      ),
-                    },
-                  ],
-                },
-                options: {
-                  borderColor: table.color,
-                  backgroundColor: table.color,
-                  tension: 0.2,
-                  pointRadius: 0,
-                  borderWidth: 2,
-                  width: 1,
-                  scales: {
-                    x: {
-                      ticks: {
-                        maxRotation: 90,
-                        minRotation: 0,
-                        font: {
-                          size: 9,
+                      type: "line",
+                      data: {
+                        labels: table.rows.map((row) => row[0]),
+                        datasets: [
+                          {
+                            label: table.title,
+                            data: table.rows.map((row) =>
+                              Number(row[1].replace("%", ""))
+                            ),
+                          },
+                        ],
+                      },
+                      options: {
+                        borderColor: table.color,
+                        backgroundColor: table.color,
+                        tension: 0.2,
+                        pointRadius: 0,
+                        borderWidth: 2,
+                        width: 1,
+                        scales: {
+                          x: {
+                            ticks: {
+                              maxRotation: 90,
+                              minRotation: 0,
+                              font: {
+                                size: 9,
+                              },
+                            },
+                          },
+                          y: {
+                            min: 0,
+                            max: 100,
+                            ticks: {
+                              stepSize: 20,
+                              callback: (value) => value + "%",
+                            },
+                            scaleLabel: {
+                              display: true,
+                              labelString: "Percentage",
+                            },
+                          },
                         },
                       },
-                    },
-                    y: {
-                      min: 0,
-                      max: 100,
-                      ticks: {
-                        stepSize: 20,
-                        callback: (value) => value + "%",
-                      },
-                      scaleLabel: {
-                        display: true,
-                        labelString: "Percentage",
-                      },
-                    },
-                  },
-                },
-              });
-            });
+                    }
+                  );
+                });
+              })
+              .catch((error) => console.error(error));
           }
         </script>
       </div>
