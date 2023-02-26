@@ -4,7 +4,53 @@
     <script src="
 https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js
 "></script>
-    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+      table {
+        margin: 40px 0px;
+        width: 100%;
+        border-spacing: 0px;
+        break-inside: avoid;
+      }
+      thead,
+      tbody {
+        height: 40px;
+        font-weight: 500;
+        background-color: #f3f3f3;
+      }
+      td {
+        padding: 10px;
+        border: 1px solid #6466a911;
+      }
+      thead {
+        background-color: #6466a9;
+        color: white;
+        font-weight: 500;
+      }
+
+      .page-wrapper {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      .page-container {
+        width: 600px;
+        margin: 40px;
+      }
+      .canvas-container {
+        margin: 40px 0px;
+        width: 100%;
+        break-inside: avoid;
+      }
+      .date-table {
+        text-align: left;
+        width: 100%;
+      }
+    </style>
     <title></title>
   </head>
   <body>
@@ -22,11 +68,40 @@ https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js
         {
           // vercel function repalces {data} with report json
           const data = "{data}";
-          const { tables } = data;
+          const { tables, summary } = data;
+          // date table
+          const dateTable = document.createElement("table");
+          const dateHeadCell = dateTable.createTHead().insertRow().insertCell();
+          const datebodyCell = dateTable.createTBody().insertRow().insertCell();
+          dateHeadCell.textContent = "Dates";
+          datebodyCell.textContent = summary.dates;
+          document.getElementById("container").appendChild(dateTable);
+
+          // location table
+          const locationTable = document.createElement("table");
+          const locHeadRow = locationTable.createTHead().insertRow();
+          const locBody = locationTable.createTBody();
+
+          summary.overview.map((location, index) => {
+            const row = locBody.insertRow(index);
+            location.map((loc) => {
+              if (index === 0) {
+                locHeadRow.insertCell().textContent = loc;
+              } else {
+                const cell = row.insertCell();
+                cell.textContent = loc;
+              }
+            });
+          });
+
+          document.getElementById("container").appendChild(locationTable);
           tables.map((table) => {
             const divEl = document.createElement("div");
             divEl.setAttribute("class", "canvas-container");
-            divEl.setAttribute("style", "width: 700px; margin: 40px;");
+            divEl.setAttribute(
+              "style",
+              "width: 700px; margin: 40px; break-inside: avoid;"
+            );
 
             const canvasEl = document.createElement("canvas");
             canvasEl.setAttribute("id", table.title);
@@ -55,10 +130,20 @@ https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js
                 borderWidth: 2,
                 width: 1,
                 scales: {
+                  x: {
+                    ticks: {
+                      maxRotation: 90,
+                      minRotation: 0,
+                      font: {
+                        size: 9,
+                      },
+                    },
+                  },
                   y: {
                     min: 0,
                     max: 100,
                     ticks: {
+                      stepSize: 20,
                       callback: (value) => value + "%",
                     },
                     scaleLabel: {
