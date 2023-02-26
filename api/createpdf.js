@@ -1,56 +1,56 @@
-const express = require("express");
-const app = express();
-const port = 3000;
-const puppeteer = require("puppeteer");
-const fs = require("fs");
+import edgeChromium from "chrome-aws-lambda";
+import puppeteer from "puppeteer-core";
+const fs = require("fs").promises;
 
-app.use(express.json({ limit: "5mb" }));
+// You may want to change this if you're developing
+// on a platform different from macOS.
+// See https://github.com/vercel/og-image for a more resilient
+// system-agnostic options for Puppeteeer.
+const LOCAL_CHROME_EXECUTABLE =
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 
-module.exports = async (req, res) => {
-  const buffer = await createPdf(JSON.stringify(req.body));
-  res.end(buffer);
-};
+export default async function (req, res) {
+  // replace {{data}} with the data you want to pass to the html page
+  const data = JSON.stringify(req.body);
+  const filePath = `${__dirname}/html/index.html`;
+  const logoPath = `${__dirname}/html/4site-logo.svg`;
+  const html = await fs.readFile(filePath, "utf8");
+  const logo = await fs.readFile(logoPath, "utf8");
+  const replacedHtml = html
+    .replace('"{data}"', data)
+    .replace("{logo}", `'${logo}'`);
+  //   await fs.writeFile(filePath, replacedHtml, "utf8");
 
-// app.post("/", async (req, res) => {
-//   const buffer = await createPdf(JSON.stringify(req.body));
-//   res.end(buffer);
-// });
+  // Edge executable will return an empty string locally.
+  const executablePath =
+    (await edgeChromium.executablePath) || LOCAL_CHROME_EXECUTABLE;
 
-// app.listen(port, () => {
-//   console.log(`Example app listening on port ${port}`);
-// });
-
-async function createPdf(data) {
-  // save the data to a file
-  await fs.promises.writeFile("html/report.json", data);
-
-  // run a chromium instance with CORS disabled
   const browser = await puppeteer.launch({
+    executablePath,
+    args: edgeChromium.args,
     headless: false,
-    args: ["--disable-web-security"],
   });
 
-  // create a new page
   const page = await browser.newPage();
-  await page.setBypassCSP(true);
-
-  await page.goto(`file://${__dirname}/html/index.html`, {
-    waitUntil: "networkidle0",
-  });
+  await page.setViewport({ width: 794, height: 1122, deviceScaleFactor: 2 });
+  await page.setContent(replacedHtml);
 
   // we Use pdf function to generate the pdf in the same folder as this file.
   const buffer = await page.pdf({
-    path: "report.pdf",
     format: "A4",
     printBackground: true,
     margin: {
       top: "20px",
-      right: "40px",
+      right: "30px",
       bottom: "20px",
-      left: "40px",
+      left: "30px",
     },
+    displayHeaderFooter: true,
+    footerTemplate: `<div style="font-size: 12px; color: black; text-align: right; width: 100%">
+                        <span class="pageNumber" style="margin-right: 40px; margin-bottom:30px"></span>
+                    </div>`,
   });
 
   await browser.close();
-  return buffer;
+  res.end(buffer.toString("base64"));
 }
