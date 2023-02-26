@@ -44,6 +44,7 @@ export default async function (req, res) {
       bottom: "20px",
       left: "40px",
     },
+    displayHeaderFooter: true,
     footerTemplate: `
     <div style="border-top: solid 1px #bbb; width: 100%; font-size: 9px;
         padding: 5px 5px 0; color: #bbb; position: relative;">
