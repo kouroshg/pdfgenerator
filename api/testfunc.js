@@ -28,7 +28,10 @@ export default async function (req, res) {
   });
 
   const page = await browser.newPage();
-  await page.setContent(replacedHtml);
+  await page.goto(`data:text/html,${replacedHtml}`, {
+    waitUntil: "networkidle0",
+  });
+  //   await page.setContent(replacedHtml);
 
   // we Use pdf function to generate the pdf in the same folder as this file.
   const buffer = await page.pdf({
