@@ -13,13 +13,8 @@ export default async function (req, res) {
   // replace {{data}} with the data you want to pass to the html page
   const data = JSON.stringify(req.body);
   const filePath = `${__dirname}/html/index.html`;
-  const logoPath = `${__dirname}/html/4site-logo.svg`;
   const html = await fs.readFile(filePath, "utf8");
-  const logo = await fs.readFile(logoPath, "utf8");
-  const replacedHtml = html
-    .replace('"{data}"', data)
-    .replace("{logo}", `'${logo}'`);
-  //   await fs.writeFile(filePath, replacedHtml, "utf8");
+  const replacedHtml = html.replace('"{data}"', data);
 
   // Edge executable will return an empty string locally.
   const executablePath =
