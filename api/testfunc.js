@@ -16,8 +16,9 @@ export default async function (req, res) {
   const logoPath = `${__dirname}/html/4site-logo.svg`;
   const html = await fs.readFile(filePath, "utf8");
   const logo = await fs.readFile(logoPath, "utf8");
-  const replacedHtml = html.replace('"{data}"', data);
-  replacedHtml = replacedHtml.replace("{logo}", `'${logo}'`);
+  const replacedHtml = html
+    .replace('"{data}"', data)
+    .replace("{logo}", `'${logo}'`);
   //   await fs.writeFile(filePath, replacedHtml, "utf8");
 
   // Edge executable will return an empty string locally.
