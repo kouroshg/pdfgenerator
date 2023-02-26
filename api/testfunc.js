@@ -45,17 +45,8 @@ export default async function (req, res) {
       left: "40px",
     },
     displayHeaderFooter: true,
-    //     footerTemplate: `
-    //         <div style="position: relative">
-    //           <div style="position: absolute; right: 5px; top: 5px">
-    //             <b
-    //               ><span class="pageNumber" style="font-size: 14px; color: black"
-    //                 ></span
-    //               ></b
-    //             >
-    //           </div>
-    //         </div>
-    //   `,
+    footerTemplate:
+      '<div style="font-size: 10px; color: #666; text-align: center; width: 100%;"><span class="pageNumber"></span> / <span class="totalPages" style="font-size: 14px; color: black"></span></div>',
   });
 
   await browser.close();
