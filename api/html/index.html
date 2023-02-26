@@ -49,6 +49,7 @@ https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js
       .date-table {
         text-align: left;
         width: 100%;
+        break-inside: avoid;
       }
     </style>
     <title></title>
@@ -93,13 +94,11 @@ https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js
             });
 
             document.getElementById("container").appendChild(locationTable);
+
+            // create new charts
             tables.map((table) => {
               const divEl = document.createElement("div");
               divEl.setAttribute("class", "canvas-container");
-              divEl.setAttribute(
-                "style",
-                "width: 700px; margin: 40px; break-inside: avoid;"
-              );
 
               const canvasEl = document.createElement("canvas");
               canvasEl.setAttribute("id", table.title);
@@ -153,9 +152,6 @@ https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js
                 },
               });
             });
-            // console.log(data);
-            // })
-            // .catch((error) => console.error(error));
           }
         </script>
       </div>
