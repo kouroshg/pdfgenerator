@@ -32,11 +32,12 @@ export default async function (req, res) {
   });
 
   const page = await browser.newPage();
+  await page.setViewport({ width: 794, height: 1122, deviceScaleFactor: 2 });
   await page.setContent(replacedHtml);
 
   // we Use pdf function to generate the pdf in the same folder as this file.
   const buffer = await page.pdf({
-    format: "letter",
+    format: "A4",
     printBackground: true,
     margin: {
       top: "20px",
