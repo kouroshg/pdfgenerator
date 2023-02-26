@@ -46,7 +46,7 @@ export default async function (req, res) {
     },
     displayHeaderFooter: true,
     footerTemplate:
-      '<div style="font-size: 14px; color: black; text-align: right; width: 100%; margin: 10px 40px;"><span class="pageNumber"></span></div>',
+      '<div style="font-size: 14px; color: black; text-align: right; width: 100%;"><span class="pageNumber"></span></div>',
   });
 
   await browser.close();
