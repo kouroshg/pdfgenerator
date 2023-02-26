@@ -1,5 +1,5 @@
 import edgeChromium from "chrome-aws-lambda";
-// import puppeteer from "puppeteer-core";
+import puppeteer from "puppeteer-core";
 import chromium from "chrome-aws-lambda";
 const fs = require("fs").promises;
 
@@ -21,7 +21,14 @@ export default async function (req, res) {
   const executablePath =
     (await edgeChromium.executablePath) || LOCAL_CHROME_EXECUTABLE;
 
-  const browser = await chromium.puppeteer.launch({
+  // const browser = await chromium.puppeteer.launch({
+  //   args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+  //   defaultViewport: chromium.defaultViewport,
+  //   executablePath: await chromium.executablePath,
+  //   headless: true,
+  //   ignoreHTTPSErrors: true,
+  // });
+  const browser = await puppeteer.launch({
     args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
     defaultViewport: chromium.defaultViewport,
     executablePath: await chromium.executablePath,
