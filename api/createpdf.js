@@ -21,7 +21,7 @@ export default async function (req, res) {
     (await edgeChromium.executablePath) || LOCAL_CHROME_EXECUTABLE;
 
   const browser = await puppeteer.launch({
-    executablePath,
+    // executablePath,
     // args: edgeChromium.args,
     headless: true,
   });
