@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/createpdf.js": {
+    "api/create-dashboard-pdf.js": {
       "memory": 1024,
       "maxDuration": 10
     }
